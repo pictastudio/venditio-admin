@@ -1,15 +1,15 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace PictaStudio\VenditioAdmin;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class SkeletonPlugin implements Plugin
+class VenditioAdminPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'skeleton';
+        return 'venditio-admin';
     }
 
     public function register(Panel $panel): void
