@@ -10,11 +10,10 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
+use PictaStudio\VenditioAdmin\Testing\TestsVenditioAdmin;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use PictaStudio\VenditioAdmin\Commands\VenditioAdminCommand;
-use PictaStudio\VenditioAdmin\Testing\TestsVenditioAdmin;
 
 class VenditioAdminServiceProvider extends PackageServiceProvider
 {
@@ -35,8 +34,7 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
                 $command
                     ->publishConfigFile()
                     ->publishMigrations()
-                    ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('pictastudio/venditio-admin');
+                    ->askToRunMigrations();
             });
 
         $configFileName = $package->shortName();
@@ -114,7 +112,7 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
     protected function getCommands(): array
     {
         return [
-            VenditioAdminCommand::class,
+
         ];
     }
 
@@ -147,8 +145,9 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
      */
     protected function getMigrations(): array
     {
-        return [
-            'create_venditio-admin_table',
-        ];
+        return collect(scandir(__DIR__ . '/../database/migrations'))
+            ->reject(fn (string $file) => in_array($file, ['.', '..']))
+            ->map(fn (string $file) => str($file)->beforeLast('.php'))
+            ->toArray();
     }
 }

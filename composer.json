@@ -60,7 +60,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "PictaStudio\\VenditioAdmin\\VenditioAdminServiceProvider"
+                "PictaStudio\\VenditioAdmin\\VenditioAdminServiceProvider",
+                "PictaStudio\\VenditioAdmin\\AdminPanelProvider"
             ],
             "aliases": {
                 "VenditioAdmin": "PictaStudio\\VenditioAdmin\\Facades\\VenditioAdmin"

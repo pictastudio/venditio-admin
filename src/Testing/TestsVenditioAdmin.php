@@ -9,5 +9,4 @@ use Livewire\Features\SupportTesting\Testable;
  */
 class TestsVenditioAdmin
 {
-    //
 }
