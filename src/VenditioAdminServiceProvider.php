@@ -101,8 +101,8 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('venditio-admin', __DIR__ . '/../resources/dist/components/venditio-admin.js'),
-            Css::make('venditio-admin-styles', __DIR__ . '/../resources/dist/venditio-admin.css'),
-            Js::make('venditio-admin-scripts', __DIR__ . '/../resources/dist/venditio-admin.js'),
+            // Css::make('venditio-admin-styles', __DIR__ . '/../resources/dist/venditio-admin.css'),
+            // Js::make('venditio-admin-scripts', __DIR__ . '/../resources/dist/venditio-admin.js'),
         ];
     }
 

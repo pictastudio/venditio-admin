@@ -3,15 +3,14 @@
 namespace PictaStudio\VenditioAdmin\Traits;
 
 use Filament\Panel;
+use PictaStudio\VenditioAdmin\Managers\AuthManager;
 
-trait VenditioAdminUser
+trait VenditioAdminPanelPermissions
 {
     public function canAccessPanel(Panel $panel): bool
     {
         $allowedRoles = match ($panel->getId()) {
-            'venditio-admin' => collect(UserRole::canAccessAdminPanel()) // here use AuthManeger class from the core package
-                ->map->value
-                ->toArray()
+            'venditio-admin' => AuthManager::make($this)->canAccessAdminPanel(),
         };
 
         return $this->hasRole($allowedRoles);
