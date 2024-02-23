@@ -16,9 +16,12 @@ use PictaStudio\VenditioCore\Models\Order;
 
 class OrderResource extends Resource
 {
-    protected static ?string $model = Order::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-inbox';
+
+    public static function getModel(): string
+    {
+        return config('venditio-core.models.order');
+    }
 
     public static function getNavigationGroup(): ?string
     {

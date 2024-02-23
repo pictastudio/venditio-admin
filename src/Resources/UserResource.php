@@ -18,9 +18,12 @@ use PictaStudio\VenditioCore\Models\User;
 
 class UserResource extends Resource
 {
-    protected static ?string $model = User::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    public static function getModel(): string
+    {
+        return config('venditio-core.models.user');
+    }
 
     public static function getNavigationGroup(): ?string
     {

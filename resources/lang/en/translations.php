@@ -110,6 +110,9 @@ return [
             'tax_class' => [
                 'label' => 'Tax Class',
             ],
+            'category' => [
+                'label' => 'Category',
+            ],
             'name' => [
                 'label' => 'Name',
             ],
@@ -121,6 +124,9 @@ return [
             ],
             'description' => [
                 'label' => 'Description',
+            ],
+            'visibility' => [
+                'label' => 'Visibility',
             ],
             'active' => [
                 'label' => 'Active',
@@ -183,6 +189,25 @@ return [
             ],
             'active' => [
                 'label' => 'Active',
+            ],
+        ],
+    ],
+
+    'brand' => [
+        'form' => [
+            'details' => [
+                'label' => 'Details',
+            ],
+            'name' => [
+                'label' => 'Name',
+            ],
+        ],
+        'table' => [
+            'name' => [
+                'label' => 'Name',
+            ],
+            'products_count' => [
+                'label' => 'Total Products',
             ],
         ],
     ],

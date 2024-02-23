@@ -10,6 +10,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -28,9 +29,12 @@ use PictaStudio\VenditioCore\Models\Product;
 
 class ProductResource extends Resource
 {
-    protected static ?string $model = Product::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-tag';
+
+    public static function getModel(): string
+    {
+        return config('venditio-core.models.product');
+    }
 
     public static function getNavigationGroup(): ?string
     {
@@ -44,7 +48,7 @@ class ProductResource extends Resource
                 Tabs::make()
                     ->columnSpanFull()
                     ->schema([
-                        Tab::make(__('venditio-admin::translations.product.form.tabs.details.label'))
+                        Tab::make(__('venditio-admin::translations.product.form.tabs.details'))
                             ->icon('heroicon-o-information-circle')
                             ->columns(2)
                             ->schema([
@@ -81,11 +85,14 @@ class ProductResource extends Resource
                                 TextInput::make('description_short')
                                     ->label(__('venditio-admin::translations.product.form.description_short.label'))
                                     ->required()
+                                    ->columnSpanFull()
                                     ->maxLength(255),
-                                TextInput::make('description')
+                                Textarea::make('description')
                                     ->label(__('venditio-admin::translations.product.form.description.label'))
                                     ->required()
-                                    ->maxLength(255),
+                                    ->rows(5)
+                                    ->columnSpanFull()
+                                    ->maxLength(65535),
                                 Section::make(__('venditio-admin::translations.product.form.visibility.label'))
                                     ->columns(2)
                                     ->collapsible()
@@ -111,7 +118,7 @@ class ProductResource extends Resource
                                             ->nullable(),
                                     ]),
                             ]),
-                        Tab::make(__('venditio-admin::translations.product.form.tabs.dimensions.label'))
+                        Tab::make(__('venditio-admin::translations.product.form.tabs.dimensions'))
                             ->icon('heroicon-o-cube')
                             ->columns(2)
                             ->schema([
@@ -142,7 +149,7 @@ class ProductResource extends Resource
                                     ->numeric()
                                     ->formatStateUsing(fn (?Product $record) => $record?->depth?->decimal()),
                             ]),
-                        Tab::make(__('venditio-admin::translations.product.form.tabs.images.label'))
+                        Tab::make(__('venditio-admin::translations.product.form.tabs.images'))
                             ->icon('heroicon-o-photo')
                             ->visibleOn('edit')
                             ->schema([
@@ -163,7 +170,7 @@ class ProductResource extends Resource
                                             ->maxLength(255),
                                     ]),
                             ]),
-                        Tab::make(__('venditio-admin::translations.product.form.tabs.metadata.label'))
+                        Tab::make(__('venditio-admin::translations.product.form.tabs.metadata'))
                             ->icon('heroicon-o-cog')
                             ->schema([
                                 KeyValue::make('metadata')
@@ -180,7 +187,7 @@ class ProductResource extends Resource
                                             ->maxLength(255),
                                     ]),
                             ]),
-                        Tab::make(__('venditio-admin::translations.product.form.tabs.variants.label'))
+                        Tab::make(__('venditio-admin::translations.product.form.tabs.variants'))
                             ->visible(fn (Component $livewire) => (
                                 $livewire instanceof Pages\EditProduct && config('venditio-admin.products.variants.enabled')
                             ))
