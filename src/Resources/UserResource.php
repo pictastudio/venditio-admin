@@ -24,37 +24,37 @@ class UserResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('venditio-admin::global.sections.users');
+        return __('venditio-admin::translations.global.sections.users');
     }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make(__('venditio-admin::user.form.registry.label'))
+                Section::make(__('venditio-admin::translations.user.form.registry.label'))
                     ->columns(2)
                     ->schema([
                         TextInput::make('first_name')
-                            ->label(__('venditio-admin::user.form.first_name.label'))
+                            ->label(__('venditio-admin::translations.user.form.first_name.label'))
                             ->required()
                             ->maxLength(255),
                         TextInput::make('last_name')
-                            ->label(__('venditio-admin::user.form.last_name.label'))
+                            ->label(__('venditio-admin::translations.user.form.last_name.label'))
                             ->required()
                             ->maxLength(255),
                         TextInput::make('email')
-                            ->label(__('venditio-admin::user.form.email.label'))
+                            ->label(__('venditio-admin::translations.user.form.email.label'))
                             ->email()
                             ->required()
                             ->maxLength(255),
                         // TextInput::make('password')
-                        //     ->label(__('venditio-admin::user.form.password.label'))
+                        //     ->label(__('venditio-admin::translations.user.form.password.label'))
                         //     ->password()
                         //     ->revealable()
                         //     ->required()
                         //     ->maxLength(255),
                         Toggle::make('active')
-                            ->label(__('venditio-admin::user.form.active.label'))
+                            ->label(__('venditio-admin::translations.user.form.active.label'))
                             ->default(true)
                             ->columnSpanFull(),
                     ]),

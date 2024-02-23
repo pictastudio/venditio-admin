@@ -17,6 +17,15 @@ return [
             'identifier' => [
                 'label' => 'Identifier',
             ],
+            'user_first_name' => [
+                'label' => 'First Name',
+            ],
+            'user_last_name' => [
+                'label' => 'Last Name',
+            ],
+            'total' => [
+                'label' => 'Total',
+            ],
         ],
         'infolist' => [
             'notes' => [

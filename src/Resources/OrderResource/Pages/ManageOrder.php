@@ -35,9 +35,7 @@ class ManageOrder extends ViewRecord
 
     public function getBreadcrumb(): string
     {
-        return 'Manage Order';
-
-        return __('lunarpanel::order.breadcrumb.manage');
+        return __('venditio-admin::translations.order.breadcrumb.manage');
     }
 
     public function getTitle(): string|Htmlable
@@ -100,30 +98,30 @@ class ManageOrder extends ViewRecord
                                                 //     ->label(__('lunarpanel::order.infolist.delivery_instructions.label'))
                                                 //     ->hidden(fn ($state) => blank($state)),
                                                 Infolists\Components\TextEntry::make('addresses.shipping.notes')
-                                                    ->label(__('venditio-admin::order.infolist.notes.label'))
-                                                    ->placeholder(__('venditio-admin::order.infolist.notes.placeholder')),
+                                                    ->label(__('venditio-admin::translations.order.infolist.notes.label'))
+                                                    ->placeholder(__('venditio-admin::translations.order.infolist.notes.placeholder')),
                                             ]),
                                         Infolists\Components\Grid::make()
                                             ->columns(1)
                                             ->columnSpan(1)
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('sub_total')
-                                                    ->label(__('venditio-admin::order.infolist.sub_total.label'))
+                                                    ->label(__('venditio-admin::translations.order.infolist.sub_total.label'))
                                                     ->inlineLabel()
                                                     ->alignEnd()
                                                     ->formatStateUsing(fn ($state) => $state->formatted),
                                                 Infolists\Components\TextEntry::make('discount_amount')
-                                                    ->label(__('venditio-admin::order.infolist.discount_amount.label'))
+                                                    ->label(__('venditio-admin::translations.order.infolist.discount_amount.label'))
                                                     ->inlineLabel()
                                                     ->alignEnd()
                                                     ->formatStateUsing(fn ($state) => $state->formatted),
                                                 Infolists\Components\TextEntry::make('shipping_fee')
-                                                    ->label(__('venditio-admin::order.infolist.shipping_fee.label'))
+                                                    ->label(__('venditio-admin::translations.order.infolist.shipping_fee.label'))
                                                     ->inlineLabel()
                                                     ->alignEnd()
                                                     ->formatStateUsing(fn ($state) => $state->formatted),
                                                 Infolists\Components\TextEntry::make('payment_fee')
-                                                    ->label(__('venditio-admin::order.infolist.payment_fee.label'))
+                                                    ->label(__('venditio-admin::translations.order.infolist.payment_fee.label'))
                                                     ->inlineLabel()
                                                     ->alignEnd()
                                                     ->formatStateUsing(fn ($state) => $state->formatted),
@@ -143,7 +141,7 @@ class ManageOrder extends ViewRecord
                                                 //         return $taxes;
                                                 //     }),
                                                 Infolists\Components\TextEntry::make('total_final')
-                                                    ->label(fn () => new HtmlString('<b>' . __('venditio-admin::order.infolist.total_final.label') . '</b>'))
+                                                    ->label(fn () => new HtmlString('<b>' . __('venditio-admin::translations.order.infolist.total_final.label') . '</b>'))
                                                     ->inlineLabel()
                                                     ->alignEnd()
                                                     ->weight(FontWeight::Bold)
@@ -229,13 +227,13 @@ class ManageOrder extends ViewRecord
                                 //     ->alignEnd()
                                 //     ->formatStateUsing(fn ($state) => __('lunarpanel::order.infolist.'.($state ? 'new' : 'returning').'_customer.label')),
                                 Infolists\Components\TextEntry::make('status')
-                                    ->label(__('venditio-admin::order.infolist.status.label'))
+                                    ->label(__('venditio-admin::translations.order.infolist.status.label'))
                                     // ->formatStateUsing(fn ($state) => OrderStatus::getLabel($state))
                                     ->alignEnd()
                                     // ->color(fn ($state) => OrderStatus::getColor($state))
                                     ->badge(),
                                 Infolists\Components\TextEntry::make('identifier')
-                                    ->label(__('venditio-admin::order.infolist.identifier.label'))
+                                    ->label(__('venditio-admin::translations.order.infolist.identifier.label'))
                                     ->alignEnd()
                                     ->icon('heroicon-o-clipboard')
                                     ->iconPosition(IconPosition::After)
@@ -250,12 +248,12 @@ class ManageOrder extends ViewRecord
                                 //     ->label(__('lunarpanel::order.infolist.channel.label'))
                                 //     ->alignEnd(),
                                 Infolists\Components\TextEntry::make('created_at')
-                                    ->label(__('venditio-admin::order.infolist.date_created.label'))
+                                    ->label(__('venditio-admin::translations.order.infolist.date_created.label'))
                                     ->alignEnd()
                                     ->dateTime('Y-m-d h:i a')
                                     ->visible(fn ($record) => !$record->approved_at),
                                 Infolists\Components\TextEntry::make('approved_at')
-                                    ->label(__('venditio-admin::order.infolist.date_approved.label'))
+                                    ->label(__('venditio-admin::translations.order.infolist.date_approved.label'))
                                     ->alignEnd()
                                     ->dateTime('Y-m-d h:i a')
                                     ->placeholder('-'),
@@ -304,7 +302,7 @@ class ManageOrder extends ViewRecord
             default => null,
         };
 
-        return Infolists\Components\Section::make(__("venditio-admin::order.infolist.{$type}_address.label"))
+        return Infolists\Components\Section::make(__("venditio-admin::translations.order.infolist.{$type}_address.label"))
             // ->statePath($type.'Address')
             ->compact()
             // ->headerActions([
@@ -339,7 +337,7 @@ class ManageOrder extends ViewRecord
                                 ->toArray();
                         }
 
-                        return __('venditio-admin::order.infolist.address_not_set.label');
+                        return __('venditio-admin::translations.order.infolist.address_not_set.label');
 
                     }),
                 Infolists\Components\TextEntry::make($type . '_phone')

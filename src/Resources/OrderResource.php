@@ -22,7 +22,7 @@ class OrderResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('venditio-admin::global.sections.sales');
+        return __('venditio-admin::translations.global.sections.sales');
     }
 
     // public static function getNavigationBadge(): ?string
@@ -64,35 +64,35 @@ class OrderResource extends Resource
     {
         return [
             // TextColumn::make('status')
-            //     ->label(__('venditio-admin::order.table.status.label'))
+            //     ->label(__('venditio-admin::translations.order.table.status.label'))
             //     ->formatStateUsing(fn (string $state) => OrderStatus::getLabel($state))
             //     ->color(fn (string $state) => OrderStatus::getColor($state))
             //     ->badge(),
             TextColumn::make('identifier')
-                ->label(__('venditio-admin::order.table.identifier.label'))
+                ->label(__('venditio-admin::translations.order.table.identifier.label'))
                 ->toggleable()
                 ->searchable(),
             TextColumn::make('user_first_name')
-                ->label(__('venditio-admin::order.table.user_first_name.label')),
+                ->label(__('venditio-admin::translations.order.table.user_first_name.label')),
             TextColumn::make('user_last_name')
-                ->label(__('venditio-admin::order.table.user_last_name.label')),
+                ->label(__('venditio-admin::translations.order.table.user_last_name.label')),
             // TextColumn::make('new_customer')
-            //     ->label(__('venditio-admin::order.table.new_customer.label'))
+            //     ->label(__('venditio-admin::translations.order.table.new_customer.label'))
             //     ->formatStateUsing(fn (bool $state) => CustomerStatus::getLabel($state))
             //     ->color(fn (bool $state) => CustomerStatus::getColor($state))
             //     ->icon(fn (bool $state) => CustomerStatus::getIcon($state))
             //     ->badge(),
             // TextColumn::make('shippingAddress.postcode')
-            //     ->label(__('venditio-admin::order.table.postcode.label')),
+            //     ->label(__('venditio-admin::translations.order.table.postcode.label')),
             // TextColumn::make('shippingAddress.contact_email')
-            //     ->label(__('venditio-admin::order.table.email.label')),
+            //     ->label(__('venditio-admin::translations.order.table.email.label')),
             // TextColumn::make('shippingAddress.contact_phone')
-            //     ->label(__('venditio-admin::order.table.phone.label')),
+            //     ->label(__('venditio-admin::translations.order.table.phone.label')),
             TextColumn::make('total_final')
-                ->label(__('venditio-admin::order.table.total.label'))
+                ->label(__('venditio-admin::translations.order.table.total.label'))
                 ->formatStateUsing(fn ($state): string => $state->formatted),
             // TextColumn::make('placed_at')
-            //     ->label(__('venditio-admin::order.table.date.label'))
+            //     ->label(__('venditio-admin::translations.order.table.date.label'))
             //     ->dateTime(),
         ];
     }
