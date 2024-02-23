@@ -2,13 +2,17 @@
 
 namespace PictaStudio\VenditioAdmin;
 
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
+use Filament\Tables\Table;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Validation\ValidationException;
 use Livewire\Features\SupportTesting\Testable;
 use PictaStudio\VenditioAdmin\Testing\TestsVenditioAdmin;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -87,6 +91,24 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
 
         // Testing
         Testable::mixin(new TestsVenditioAdmin());
+
+        // Configurations
+        Table::configureUsing(fn (Table $table) => (
+            $table
+                ->defaultPaginationPageOption(25)
+                ->paginated([10, 25, 50, 100])
+                ->selectCurrentPageOnly()
+                ->deferLoading()
+        ));
+
+        Page::$reportValidationErrorUsing = fn (ValidationException $exception) => (
+            Notification::make()
+                ->title(__('filament-admin.notifications.validation.title'))
+                ->body($exception->getMessage())
+                ->persistent()
+                ->danger()
+                ->send()
+        );
     }
 
     protected function getAssetPackageName(): ?string

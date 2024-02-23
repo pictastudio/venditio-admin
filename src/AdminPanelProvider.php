@@ -26,6 +26,19 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // $brandAsset = function ($asset) {
+        //     $vendorPath = 'vendor/lunarpanel/';
+
+        //     if (file_exists(public_path($vendorPath.$asset))) {
+        //         return asset($vendorPath.$asset);
+        //     } else {
+        //         $type = str($asset)
+        //             ->endsWith('.png') ? 'image/png' : 'image/svg+xml';
+
+        //         return "data:{$type};base64,".base64_encode(file_get_contents(__DIR__.'/../public/'.$asset));
+        //     }
+        // };
+
         return $panel
             ->spa()
             ->default()
@@ -33,6 +46,9 @@ class AdminPanelProvider extends PanelProvider
             // ->path('admin')
             ->path('venditio-admin')
             // ->login(Login::class)
+            ->brandName(config('venditio-admin.brand.name'))
+            ->brandLogo(config('venditio-admin.brand.logo.light'))
+            ->darkModeBrandLogo(config('venditio-admin.brand.logo.dark'))
             ->colors([
                 'primary' => Color::Amber,
                 'emerald' => Color::Emerald,
