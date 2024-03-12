@@ -2,6 +2,13 @@
 
 namespace PictaStudio\VenditioAdmin;
 
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Assets\AlpineComponent;
@@ -10,7 +17,11 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
+use Filament\Tables\Actions\ExportAction as TableExportAction;
+use Filament\Tables\Columns\Column;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Validation\ValidationException;
 use Livewire\Features\SupportTesting\Testable;
@@ -34,11 +45,10 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
          */
         $package->name(static::$name)
             ->hasCommands($this->getCommands())
+            ->hasRoute('web')
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
-                    ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToRunMigrations();
+                    ->publishConfigFile();
             });
 
         $configFileName = $package->shortName();
@@ -93,22 +103,85 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
         Testable::mixin(new TestsVenditioAdmin());
 
         // Configurations
+        FileUpload::configureUsing(fn (FileUpload $fileUpload) => (
+            $fileUpload
+                ->columnSpanFull()
+                ->downloadable()
+        ));
+
+        Repeater::configureUsing(fn (Repeater $repeater) => (
+            $repeater
+                ->columnSpanFull()
+                ->defaultItems(0)
+                ->collapsible()
+                ->addAction(fn (Action $action) => (
+                    $action->icon('heroicon-o-plus')
+                ))
+        ));
+
+        ViewAction::configureUsing(fn (ViewAction $viewAction) => (
+            $viewAction
+                ->icon('heroicon-o-eye')
+        ));
+
+        CreateAction::configureUsing(fn (CreateAction $createAction) => (
+            $createAction
+                ->icon('heroicon-o-plus')
+        ));
+
+        DeleteAction::configureUsing(fn (DeleteAction $deleteAction) => (
+            $deleteAction
+                ->icon('heroicon-s-trash')
+        ));
+
+        ExportAction::configureUsing(fn (ExportAction $exportAction) => (
+            $exportAction
+                ->icon('heroicon-o-arrow-down-tray')
+        ));
+
+        TableExportAction::configureUsing(fn (TableExportAction $exportAction) => (
+            $exportAction
+                ->icon('heroicon-o-arrow-down-tray')
+        ));
+
         Table::configureUsing(fn (Table $table) => (
             $table
                 ->defaultPaginationPageOption(25)
                 ->paginated([10, 25, 50, 100])
                 ->selectCurrentPageOnly()
-                ->deferLoading()
+            // ->deferLoading()
         ));
 
         Page::$reportValidationErrorUsing = fn (ValidationException $exception) => (
             Notification::make()
-                ->title(__('filament-admin.notifications.validation.title'))
+                ->title(__('venditio-admin::translations.global.notifications.validation.title'))
                 ->body($exception->getMessage())
                 ->persistent()
                 ->danger()
                 ->send()
         );
+
+        if (config('venditio-admin.filament.columns.icon.enable_click_to_toggle')) {
+            IconColumn::configureUsing(function (IconColumn $iconColumn) {
+                $iconColumn->action(function (Model $record, Column $column) {
+                    $name = $column->getName();
+                    $record->update([
+                        $name => !$record->$name,
+                    ]);
+
+                    Notification::make()
+                        ->title(__('filament-panels::resources/pages/edit-record.notifications.saved.title'))
+                        ->success()
+                        ->send();
+                });
+
+                $iconColumn->tooltip('Click to toggle');
+
+                $iconColumn->alignCenter();
+
+                return $iconColumn;
+            });
+        }
     }
 
     protected function getAssetPackageName(): ?string
@@ -167,9 +240,6 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
      */
     protected function getMigrations(): array
     {
-        return collect(scandir(__DIR__ . '/../database/migrations'))
-            ->reject(fn (string $file) => in_array($file, ['.', '..']))
-            ->map(fn (string $file) => str($file)->beforeLast('.php'))
-            ->toArray();
+        return [];
     }
 }

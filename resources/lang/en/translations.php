@@ -7,9 +7,25 @@ return [
             'sales' => 'Sales',
             'users' => 'Users',
         ],
+        'widgets' => [
+            'dashboard' => [
+                'brand' => [
+                    'visit_site' => 'Visit Site',
+                ],
+            ],
+        ],
+        'notifications' => [
+            'validation' => [
+                'title' => 'Validation Error',
+            ],
+        ],
     ],
 
     'order' => [
+        'label' => [
+            'singular' => 'Order',
+            'plural' => 'Orders',
+        ],
         'breadcrumb' => [
             'manage' => 'Manage Order',
         ],
@@ -17,20 +33,60 @@ return [
             'identifier' => [
                 'label' => 'Identifier',
             ],
+            'status' => [
+                'label' => 'Status',
+            ],
             'user_first_name' => [
                 'label' => 'First Name',
             ],
             'user_last_name' => [
                 'label' => 'Last Name',
             ],
+            'user_email' => [
+                'label' => 'Email',
+            ],
             'total' => [
                 'label' => 'Total',
             ],
+            'approved_at' => [
+                'label' => 'Date',
+            ],
         ],
         'infolist' => [
+            'approved_at' => [
+                'action' => [
+                    'label' => 'Approve',
+                ],
+            ],
+            'admin_notes' => [
+                'label' => 'Admin Notes',
+                'field_label' => 'Notes',
+                'placeholder' => 'Add a note...',
+            ],
             'notes' => [
                 'label' => 'Notes',
                 'placeholder' => 'Add a note...',
+            ],
+            'unit_price' => [
+                'label' => 'Unit Price',
+            ],
+            'unit_final_price' => [
+                'label' => 'Unit Final Price',
+            ],
+            'qty' => [
+                'label' => 'Qty',
+            ],
+            'unit_final_price_tax' => [
+                'label' => 'Unit Final Price Tax',
+            ],
+            'unit_final_price_taxable' => [
+                'label' => 'Unit Final Price Taxable',
+            ],
+            'unit_discount' => [
+                'label' => 'Unit Discount',
+            ],
+            'total_final_price' => [
+                'label' => 'Total Final Price',
             ],
             'sub_total' => [
                 'label' => 'Sub Total',
@@ -47,6 +103,9 @@ return [
             'total_final' => [
                 'label' => 'Total Final',
             ],
+            'view_customer' => [
+                'label' => 'View Customer',
+            ],
             'status' => [
                 'label' => 'Status',
             ],
@@ -59,6 +118,18 @@ return [
             'date_approved' => [
                 'label' => 'Date Approved',
             ],
+            'user_info' => [
+                'label' => 'User Info',
+            ],
+            'user_first_name' => [
+                'label' => 'First Name',
+            ],
+            'user_last_name' => [
+                'label' => 'Last Name',
+            ],
+            'user_email' => [
+                'label' => 'Email',
+            ],
             'shipping_address' => [
                 'label' => 'Shipping Address',
             ],
@@ -68,31 +139,70 @@ return [
             'address_not_set' => [
                 'label' => 'Address not set',
             ],
+            'address' => [
+                'first_name' => 'First Name',
+                'last_name' => 'Last Name',
+                'email' => 'Email',
+                'sex' => 'Sex',
+                'phone' => 'Phone',
+                'vat_number' => 'VAT Number',
+                'fiscal_code' => 'Fiscal Code',
+                'company_name' => 'Company Name',
+                'address_line_1' => 'Address Line 1',
+                'address_line_2' => 'Address Line 2',
+                'city' => 'City',
+                'state' => 'State',
+                'zip' => 'Zip',
+            ],
         ],
     ],
 
     'user' => [
-        'registry' => [
-            'label' => 'Registry',
+        'label' => [
+            'singular' => 'User',
+            'plural' => 'Users',
         ],
-        'first_name' => [
-            'label' => 'First Name',
+        'form' => [
+            'registry' => [
+                'label' => 'Registry',
+            ],
+            'first_name' => [
+                'label' => 'First Name',
+            ],
+            'last_name' => [
+                'label' => 'Last Name',
+            ],
+            'email' => [
+                'label' => 'Email',
+            ],
+            'password' => [
+                'label' => 'Password',
+            ],
+            'active' => [
+                'label' => 'Active',
+            ],
+            'roles' => [
+                'label' => 'Roles',
+            ],
         ],
-        'last_name' => [
-            'label' => 'Last Name',
-        ],
-        'email' => [
-            'label' => 'Email',
-        ],
-        'password' => [
-            'label' => 'Password',
-        ],
-        'active' => [
-            'label' => 'Active',
+        'table' => [
+            'name' => [
+                'label' => 'Name',
+            ],
+            'email' => [
+                'label' => 'Email',
+            ],
+            'active' => [
+                'label' => 'Active',
+            ],
         ],
     ],
 
     'product' => [
+        'label' => [
+            'singular' => 'Product',
+            'plural' => 'Products',
+        ],
         'form' => [
             'tabs' => [
                 'details' => 'Details',
@@ -100,6 +210,9 @@ return [
                 'images' => 'Images',
                 'metadata' => 'Metadata',
                 'variants' => 'Variants',
+            ],
+            'connections' => [
+                'label' => 'Connections',
             ],
             'brand' => [
                 'label' => 'Brand',
@@ -110,8 +223,8 @@ return [
             'tax_class' => [
                 'label' => 'Tax Class',
             ],
-            'category' => [
-                'label' => 'Category',
+            'categories' => [
+                'label' => 'Categories',
             ],
             'name' => [
                 'label' => 'Name',
@@ -155,6 +268,9 @@ return [
             'width' => [
                 'label' => 'Width',
             ],
+            'height' => [
+                'label' => 'Height',
+            ],
             'depth' => [
                 'label' => 'Depth',
             ],
@@ -166,6 +282,7 @@ return [
                 ],
                 'alt' => [
                     'label' => 'Alt',
+                    'helper_text' => 'Provide a short description of the image, it is used for SEO and accessibility purposes',
                 ],
             ],
             'metadata' => [
@@ -193,7 +310,47 @@ return [
         ],
     ],
 
+    'product_category' => [
+        'label' => [
+            'singular' => 'Product Category',
+            'plural' => 'Product Categories',
+        ],
+        'form' => [
+            'details' => [
+                'label' => 'Details',
+            ],
+            'parent_id' => [
+                'label' => 'Parent',
+                'placeholder' => 'Select a parent category',
+            ],
+            'name' => [
+                'label' => 'Name',
+            ],
+            'order' => [
+                'label' => 'Order',
+            ],
+            'active' => [
+                'label' => 'Active',
+            ],
+        ],
+        'table' => [
+            'parent_id' => [
+                'label' => 'Parent',
+            ],
+            'name' => [
+                'label' => 'Name',
+            ],
+            'order' => [
+                'label' => 'Order',
+            ],
+        ],
+    ],
+
     'brand' => [
+        'label' => [
+            'singular' => 'Brand',
+            'plural' => 'Brands',
+        ],
         'form' => [
             'details' => [
                 'label' => 'Details',

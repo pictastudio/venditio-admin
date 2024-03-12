@@ -6,22 +6,20 @@ use Closure;
 use Filament\Forms;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\HtmlString;
 use Livewire\Attributes\Computed;
 use Lunar\Models\Transaction;
 use PictaStudio\VenditioAdmin\Livewire\Components\TableComponent;
 use PictaStudio\VenditioAdmin\Support\Tables\Components\KeyValue;
+use PictaStudio\VenditioCore\Models\OrderLine;
 
-/**
- * @property \Illuminate\Support\Collection $charges
- * @property \Illuminate\Support\Collection $refunds
- * @property float $availableToRefund
- * @property bool $canBeRefunded
- */
 class OrderItemsTable extends TableComponent
 {
     public function table(Table $table): Table
@@ -30,86 +28,72 @@ class OrderItemsTable extends TableComponent
             ->query($this->record->lines()->getQuery())
                 // ->wherein('type', ['physical', 'digital']))
             ->columns([
-                Tables\Columns\Layout\Split::make([
-                    // Tables\Columns\ImageColumn::make('image')
-                    //     ->defaultImageUrl(fn () => 'data:image/svg+xml;base64, '.base64_encode(
-                    //         Blade::render('<x-filament::icon icon="heroicon-o-photo" style="color:rgb('.Color::Gray[400].');"/>')
-                    //     ))
-                    //     ->grow(false)
-                    //     ->getStateUsing(fn ($record) => $record->purchasable?->getThumbnail()?->getUrl('small')),
+                Split::make([
+                    ImageColumn::make('image')
+                        ->defaultImageUrl(fn () => 'data:image/svg+xml;base64, ' . base64_encode(
+                            Blade::render('<x-filament::icon icon="heroicon-o-photo" style="color:rgb(' . Color::Gray[400] . ');"/>')
+                        ))
+                        ->grow(false)
+                        ->getStateUsing(function ($record) {
+                            $image = $record->product_item['images'][0]['img'] ?? null;
 
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\Layout\Split::make([
-                            Tables\Columns\Layout\Stack::make([
-                                Tables\Columns\TextColumn::make('description')
+                            if (!$image) {
+                                return;
+                            }
+
+                            return asset('storage/' . $image);
+                        }),
+
+                    Stack::make([
+                        Split::make([
+                            Stack::make([
+                                TextColumn::make('product_name')
                                     ->weight(FontWeight::Bold),
-                                Tables\Columns\TextColumn::make('identifier')
-                                    ->color(Color::Gray),
-                                // Tables\Columns\TextColumn::make('options')
+                                TextColumn::make('product_sku'),
+                                // TextColumn::make('identifier')
+                                //     ->color(Color::Gray),
+                                // TextColumn::make('options')
                                 //     ->getStateUsing(fn ($record) => $record->purchasable?->getOptions())
                                 //     ->badge(),
                             ]),
 
-                            Tables\Columns\Layout\Stack::make([
-                                Tables\Columns\TextColumn::make('unit')
-                                    ->alignEnd()
-                                    ->color(Color::Gray)
-                                    ->getStateUsing(fn ($record) => "{$record->qty} @ {$record->unit_price->formatted}"),
-                                Tables\Columns\TextColumn::make('sub_total')
+                            Stack::make([
+                                TextColumn::make('unit_final_price')
+                                    ->label(__('venditio-admin::translations.order.infolist.unit_final_price.label'))
                                     ->alignEnd()
                                     ->weight(FontWeight::Bold)
-                                    ->formatStateUsing(fn ($state) => $state->formatted),
+                                    ->getStateUsing(fn ($record) => "{$record->qty} x {$record->unit_final_price}"),
+                                TextColumn::make('total_final_price')
+                                    ->label(__('venditio-admin::translations.order.infolist.total_final_price.label'))
+                                    ->alignEnd()
+                                    ->color(Color::Gray),
                             ]),
                         ])
                             ->extraAttributes(['style' => 'align-items: start;']),
                     ])
                         ->columnSpanFull(),
                 ])->extraAttributes(['style' => 'align-items: start;']),
-                Tables\Columns\Layout\Panel::make([
-                    Tables\Columns\Layout\Stack::make([
-                        // Tables\Columns\TextColumn::make('stock')
-                        //     ->getStateUsing(fn ($record) => $record->purchasable?->stock)
-                        //     ->formatStateUsing(fn ($state) => __('lunarpanel::order.infolist.current_stock_level.message', [
-                        //         'count' => $state,
-                        //     ]))
-                        //     ->colors(fn () => [
-                        //         'danger' => fn ($state) => $state < 50,
-                        //         'success' => fn ($state) => $state >= 50,
-                        //     ]),
-                        // Tables\Columns\TextColumn::make('meta.stock_level')
-                        //     ->formatStateUsing(fn ($state) => __('lunarpanel::order.infolist.purchase_stock_level.message', [
-                        //         'count' => $state,
-                        //     ]))
-                        //     ->color(Color::Gray),
-                        // Tables\Columns\TextColumn::make('notes')
-                        //     ->description(new HtmlString('<b>'.__('lunarpanel::order.infolist.notes.label').'</b>'), 'above'),
-
+                Panel::make([
+                    Stack::make([
                         KeyValue::make('price_breakdowns')
-                            ->getStateUsing(function ($record) {
-
-                                $states = [];
-
-                                $states['unit_price'] = "{$record->unit_price->formatted} / {$record->qty}";
-                                $states['qty'] = $record->qty;
-                                $states['unit_final_price_taxable'] = $record->unit_final_price_taxable?->formatted;
-                                $states['unit_discount'] = $record->unit_discount?->formatted;
-                                $states['unit_final_price_tax'] = $record->unit_final_price_tax?->formatted;
-
-                                // foreach ($record->tax_breakdown?->amounts ?? [] as $tax) {
-                                //     $states[$tax->description] = $tax->price->formatted;
-                                // }
-
-                                $states['total_final_price'] = $record->total_final_price?->formatted;
-
-                                return $states;
+                            ->getStateUsing(function (OrderLine $record) {
+                                return [
+                                    __('venditio-admin::translations.order.infolist.unit_price.label') => $record->unit_price,
+                                    __('venditio-admin::translations.order.infolist.qty.label') => $record->qty,
+                                    __('venditio-admin::translations.order.infolist.unit_final_price_tax.label') => $record->unit_final_price_tax,
+                                    __('venditio-admin::translations.order.infolist.unit_final_price_taxable.label') => $record->unit_final_price_taxable,
+                                    __('venditio-admin::translations.order.infolist.unit_discount.label') => $record->unit_discount,
+                                    __('venditio-admin::translations.order.infolist.total_final_price.label') => $record->total_final_price,
+                                ];
                             }),
                     ]),
                 ])
                     ->collapsed()
                     ->collapsible(),
             ])
+            ->paginated(config('venditio-admin.resources.default.order.configuration.order_lines.paginated'))
             ->bulkActions([
-                $this->getBulkRefundAction(),
+                // $this->getBulkRefundAction(),
             ]);
     }
 

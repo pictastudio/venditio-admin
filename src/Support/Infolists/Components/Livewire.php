@@ -21,9 +21,9 @@ class Livewire extends Entry
         return $this;
     }
 
-    public function getContent()
+    public function getContent(): string
     {
-        return $this->getContentName();
+        return $this->livewireComponent;
     }
 
     public function getContentName(): string

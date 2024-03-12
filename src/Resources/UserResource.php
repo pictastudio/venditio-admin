@@ -2,7 +2,9 @@
 
 namespace PictaStudio\VenditioAdmin\Resources;
 
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -11,8 +13,10 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use PictaStudio\VenditioAdmin\Resources\UserResource\Pages;
 use PictaStudio\VenditioCore\Models\User;
 
@@ -25,9 +29,24 @@ class UserResource extends Resource
         return config('venditio-core.models.user');
     }
 
+    public static function getModelLabel(): string
+    {
+        return __('venditio-admin::translations.user.label.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('venditio-admin::translations.user.label.plural');
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return __('venditio-admin::translations.global.sections.users');
+    }
+
+    public static function getRecordTitleAttribute(): ?string
+    {
+        return 'name';
     }
 
     public static function form(Form $form): Form
@@ -35,7 +54,7 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Section::make(__('venditio-admin::translations.user.form.registry.label'))
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
                         TextInput::make('first_name')
                             ->label(__('venditio-admin::translations.user.form.first_name.label'))
@@ -61,6 +80,19 @@ class UserResource extends Resource
                             ->default(true)
                             ->columnSpanFull(),
                     ]),
+                Section::make(__('venditio-admin::translations.user.form.roles.label'))
+                    ->schema([
+                        // CheckboxList::make('roles')
+                        //     ->label(false)
+                        //     ->relationship('roles', 'name', fn ($query) => $query->orderBy('id'))
+                        //     ->required(),
+                        Select::make('roles')
+                            ->label(false)
+                            ->searchable()
+                            ->preload()
+                            ->relationship('roles', 'name', fn (Builder $query) => $query->orderBy('id'))
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -69,9 +101,14 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('venditio-admin::translations.user.table.name.label'))
                     ->searchable(),
                 TextColumn::make('email')
+                    ->label(__('venditio-admin::translations.user.table.email.label'))
                     ->searchable(),
+                IconColumn::make('active')
+                    ->label(__('venditio-admin::translations.user.table.active.label'))
+                    ->boolean(),
             ])
             ->filters([
 

@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Collection;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use PictaStudio\VenditioAdmin\Pages\Auth\Login;
 
@@ -39,32 +40,49 @@ class AdminPanelProvider extends PanelProvider
         //     }
         // };
 
+        // return $panel;
+
         return $panel
-            ->spa()
-            ->default()
+            ->spa(config('venditio-admin.panel.spa', false))
+            ->default(config('venditio-admin.panel.default'))
             ->id('venditio-admin')
+            ->login()
+            // ->passwordReset()
             // ->path('admin')
-            ->path('venditio-admin')
+            ->path(config('venditio-admin.panel.path'))
             // ->login(Login::class)
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->brandName(config('venditio-admin.brand.name'))
             ->brandLogo(config('venditio-admin.brand.logo.light'))
             ->darkModeBrandLogo(config('venditio-admin.brand.logo.dark'))
             ->colors([
                 'primary' => Color::Amber,
+                'gray' => Color::Gray,
+                'orange' => Color::Orange,
                 'emerald' => Color::Emerald,
                 'sky' => Color::Sky,
-                'orange' => Color::Orange,
                 'purple' => Color::Purple,
+                'pink' => Color::Pink,
             ])
-            ->discoverResources(in: __DIR__ . '/Resources', for: 'PictaStudio\\VenditioAdmin\\Resources')
+            // ->discoverResources(in: __DIR__ . '/Resources', for: 'PictaStudio\\VenditioAdmin\\Resources')
+            ->resources(
+                $this->getResources('venditio-admin.resources.default')
+                    ->merge(
+                        $this->getResources('venditio-admin.resources.extra')
+                    )
+                    ->toArray()
+            )
             ->discoverPages(in: __DIR__ . '/Pages', for: 'PictaStudio\\VenditioAdmin\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: __DIR__ . '/Widgets', for: 'PictaStudio\\VenditioAdmin\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-            ])
+            ->widgets(
+                $this->getWidgets()
+                    ->merge(Widgets\AccountWidget::class)
+                    ->toArray()
+            )
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth(MaxWidth::Full)
             // ->navigationGroups([
@@ -75,9 +93,9 @@ class AdminPanelProvider extends PanelProvider
             // ])
             ->userMenuItems([
                 MenuItem::make()
-                    ->label(fn () => __('filament-admin.widgets.dashboard.brand.visit_site'))
+                    ->label(fn () => __('venditio-admin::translations.global.widgets.dashboard.brand.visit_site'))
                     // ->url(route('filament.admin.resources.users.index'))
-                    ->url('/')
+                    ->url('/', true)
                     ->icon('heroicon-m-globe-alt'),
             ])
             // ->registration()
@@ -98,5 +116,29 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+        // ->loginRouteSlug('/filament/login')
+        // ->registrationRouteSlug('/filament/register')
+        // ->passwordResetRoutePrefix('/filament/password-reset')
+        // ->passwordResetRequestRouteSlug('/filament/request')
+        // ->passwordResetRouteSlug('/filament/reset')
+        // ->emailVerificationRoutePrefix('/filament/email-verification')
+        // ->emailVerificationPromptRouteSlug('/filament/prompt')
+        // ->emailVerificationRouteSlug('/filament/verify');
+    }
+
+    public function getResources(string $key): Collection
+    {
+        return collect(config($key))
+            ->filter(fn (array $resource) => $resource['enabled'])
+            ->map(fn (array $resource) => $resource['class'])
+            ->values();
+    }
+
+    public function getWidgets(): Collection
+    {
+        return collect(config('venditio-admin.widgets.dashboard'))
+            ->filter(fn (array $resource) => $resource['enabled'])
+            ->map(fn (array $resource) => $resource['class'])
+            ->values();
     }
 }

@@ -4,11 +4,13 @@ namespace PictaStudio\VenditioAdmin\Resources\BrandResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use PictaStudio\VenditioAdmin\Resources\BrandResource;
 
 class ListBrands extends ListRecords
 {
-    protected static string $resource = BrandResource::class;
+    public static function getResource(): string
+    {
+        return config('venditio-admin.resources.default.brand.class');
+    }
 
     protected function getHeaderActions(): array
     {

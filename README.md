@@ -17,17 +17,16 @@ You can install the package via composer:
 composer require pictastudio/venditio-admin
 ```
 
-You can publish and run the migrations with:
+Then initialize filament with the following command
 
 ```bash
-php artisan vendor:publish --tag="venditio-admin-migrations"
-php artisan migrate
+php artisan filament:install --panels
 ```
 
-You can publish the config file with:
+You can install the package with:
 
 ```bash
-php artisan vendor:publish --tag="venditio-admin-config"
+php artisan venditio-admin:install
 ```
 
 Optionally, you can publish the views using
@@ -36,18 +35,82 @@ Optionally, you can publish the views using
 php artisan vendor:publish --tag="venditio-admin-views"
 ```
 
+Optionally, you can publish the translations using
+
+```bash
+php artisan vendor:publish --tag="venditio-admin-translations"
+```
+
 This is the contents of the published config file:
 
 ```php
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Brand
+    |--------------------------------------------------------------------------
+    |
+    | Specify the brand settings
+    |
+    */
+    'brand' => [
+        'name' => config('app.name'),
+        'logo' => [
+            'light' => null,
+            'dark' => null,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Products
+    |--------------------------------------------------------------------------
+    |
+    */
+    'products' => [
+        'variants' => [
+            'enabled' => false,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resources
+    |--------------------------------------------------------------------------
+    |
+    | Specify the filament resources
+    |
+    */
+    'resources' => [
+        'brand' => [
+            'enabled' => true,
+            'class' => Resources\BrandResource::class,
+        ],
+        'order' => [
+            'enabled' => true,
+            'class' => Resources\OrderResource::class,
+        ],
+        'product' => [
+            'enabled' => true,
+            'class' => Resources\ProductResource::class,
+            'relation_managers' => [
+                'product_items' => [
+                    'enabled' => true,
+                    'class' => ProductItemsRelationManager::class,
+                ],
+            ],
+        ],
+        'product_category' => [
+            'enabled' => true,
+            'class' => Resources\ProductCategoryResource::class,
+        ],
+        'user' => [
+            'enabled' => true,
+            'class' => Resources\UserResource::class,
+        ],
+    ],
 ];
-```
-
-## Usage
-
-```php
-$venditioAdmin = new PictaStudio\VenditioAdmin();
-echo $venditioAdmin->echoPhrase('Hello, PictaStudio!');
 ```
 
 ## Testing

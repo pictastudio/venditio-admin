@@ -6,12 +6,6 @@
         "laravel",
         "venditio-admin"
     ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../venditio-core"
-        }
-    ],
     "homepage": "https://github.com/pictastudio/venditio-admin",
     "support": {
         "issues": "https://github.com/pictastudio/venditio-admin/issues",
@@ -23,13 +17,18 @@
             "name": "PictaStudio",
             "email": "info@pictastudio.com",
             "role": "Developer"
+        },
+        {
+            "name": "Frameck",
+            "email": "fra9879@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.1",
         "filament/filament": "^3.0",
         "illuminate/contracts": "^10.0",
-        "pictastudio/venditio-core": "dev-main",
+        "pictastudio/venditio-core": "*",
         "spatie/laravel-package-tools": "^1.15.0"
     },
     "require-dev": {

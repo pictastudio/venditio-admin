@@ -22,9 +22,24 @@ class BrandResource extends Resource
         return config('venditio-core.models.brand');
     }
 
+    public static function getModelLabel(): string
+    {
+        return __('venditio-admin::translations.brand.label.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('venditio-admin::translations.brand.label.plural');
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return __('venditio-admin::translations.global.sections.catalog');
+    }
+
+    public static function getRecordTitleAttribute(): ?string
+    {
+        return 'name';
     }
 
     public static function form(Form $form): Form

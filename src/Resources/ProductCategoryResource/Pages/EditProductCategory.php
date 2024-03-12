@@ -1,15 +1,15 @@
 <?php
 
-namespace PictaStudio\VenditioAdmin\Resources\BrandResource\Pages;
+namespace PictaStudio\VenditioAdmin\Resources\ProductCategoryResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditBrand extends EditRecord
+class EditProductCategory extends EditRecord
 {
     public static function getResource(): string
     {
-        return config('venditio-admin.resources.default.brand.class');
+        return config('venditio-admin.resources.default.product_category.class');
     }
 
     protected function getHeaderActions(): array

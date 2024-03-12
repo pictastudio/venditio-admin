@@ -3,14 +3,15 @@
 namespace PictaStudio\VenditioAdmin\Resources;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -21,11 +22,12 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use PictaStudio\VenditioAdmin\Resources\ProductResource\Pages;
-use PictaStudio\VenditioAdmin\Resources\ProductResource\Pages\CreateProduct;
-use PictaStudio\VenditioAdmin\Resources\ProductResource\RelationManagers\ProductItemsRelationManager;
 use PictaStudio\VenditioCore\Models\Product;
+use PictaStudio\VenditioCore\Models\Scopes\Active;
+use PictaStudio\VenditioCore\Models\Scopes\InDateRange;
 
 class ProductResource extends Resource
 {
@@ -36,9 +38,24 @@ class ProductResource extends Resource
         return config('venditio-core.models.product');
     }
 
+    public static function getModelLabel(): string
+    {
+        return __('venditio-admin::translations.product.label.singular');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('venditio-admin::translations.product.label.plural');
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return __('venditio-admin::translations.global.sections.catalog');
+    }
+
+    public static function getRecordTitleAttribute(): ?string
+    {
+        return 'name';
     }
 
     public static function form(Form $form): Form
@@ -52,25 +69,30 @@ class ProductResource extends Resource
                             ->icon('heroicon-o-information-circle')
                             ->columns(2)
                             ->schema([
-                                Select::make('brand_id')
-                                    ->label(__('venditio-admin::translations.product.form.brand.label'))
-                                    ->required()
-                                    ->relationship('brand', 'name'),
-                                Select::make('product_type_id')
-                                    ->label(__('venditio-admin::translations.product.form.product_type.label'))
-                                    ->required()
-                                    ->relationship('productType', 'name'),
-                                Select::make('tax_class_id')
-                                    ->label(__('venditio-admin::translations.product.form.tax_class.label'))
-                                    ->required()
-                                    ->relationship('taxClass', 'name'),
-                                Select::make('category')
-                                    ->label(__('venditio-admin::translations.product.form.category.label'))
-                                    ->required()
-                                    ->relationship('category', 'name')
-                                    ->multiple()
-                                    ->searchable()
-                                    ->preload(),
+                                Fieldset::make(__('venditio-admin::translations.product.form.connections.label'))
+                                    ->columns(2)
+                                    ->schema([
+                                        Select::make('brand_id')
+                                            ->label(__('venditio-admin::translations.product.form.brand.label'))
+                                            ->required()
+                                            ->relationship('brand', 'name')
+                                            ->searchable(),
+                                        Select::make('product_type_id')
+                                            ->label(__('venditio-admin::translations.product.form.product_type.label'))
+                                            ->required()
+                                            ->relationship('productType', 'name'),
+                                        Select::make('tax_class_id')
+                                            ->label(__('venditio-admin::translations.product.form.tax_class.label'))
+                                            ->required()
+                                            ->relationship('taxClass', 'name'),
+                                        Select::make('categories')
+                                            ->label(__('venditio-admin::translations.product.form.categories.label'))
+                                            ->required()
+                                            ->relationship('categories', 'name')
+                                            ->multiple()
+                                            ->searchable()
+                                            ->preload(),
+                                    ]),
                                 TextInput::make('name')
                                     ->label(__('venditio-admin::translations.product.form.name.label'))
                                     ->required()
@@ -84,13 +106,10 @@ class ProductResource extends Resource
                                     ]),
                                 TextInput::make('description_short')
                                     ->label(__('venditio-admin::translations.product.form.description_short.label'))
-                                    ->required()
                                     ->columnSpanFull()
                                     ->maxLength(255),
-                                Textarea::make('description')
+                                RichEditor::make('description')
                                     ->label(__('venditio-admin::translations.product.form.description.label'))
-                                    ->required()
-                                    ->rows(5)
                                     ->columnSpanFull()
                                     ->maxLength(65535),
                                 Section::make(__('venditio-admin::translations.product.form.visibility.label'))
@@ -120,34 +139,35 @@ class ProductResource extends Resource
                             ]),
                         Tab::make(__('venditio-admin::translations.product.form.tabs.dimensions'))
                             ->icon('heroicon-o-cube')
-                            ->columns(2)
+                            ->columns(5)
                             ->schema([
                                 Select::make('measuring_unit')
                                     ->label(__('venditio-admin::translations.product.form.measuring_unit.label'))
                                     ->nullable()
+                                    ->columnSpanFull()
                                     ->options([
                                         'pz' => 'pz',
                                     ]),
                                 TextInput::make('weight')
                                     ->label(__('venditio-admin::translations.product.form.weight.label'))
                                     ->nullable()
-                                    ->numeric()
-                                    ->formatStateUsing(fn (?Product $record) => $record?->weight?->decimal()),
+                                    ->numeric(),
                                 TextInput::make('length')
                                     ->label(__('venditio-admin::translations.product.form.length.label'))
                                     ->nullable()
-                                    ->numeric()
-                                    ->formatStateUsing(fn (?Product $record) => $record?->length?->decimal()),
+                                    ->numeric(),
                                 TextInput::make('width')
                                     ->label(__('venditio-admin::translations.product.form.width.label'))
                                     ->nullable()
-                                    ->numeric()
-                                    ->formatStateUsing(fn (?Product $record) => $record?->width?->decimal()),
+                                    ->numeric(),
+                                TextInput::make('height')
+                                    ->label(__('venditio-admin::translations.product.form.height.label'))
+                                    ->nullable()
+                                    ->numeric(),
                                 TextInput::make('depth')
                                     ->label(__('venditio-admin::translations.product.form.depth.label'))
                                     ->nullable()
-                                    ->numeric()
-                                    ->formatStateUsing(fn (?Product $record) => $record?->depth?->decimal()),
+                                    ->numeric(),
                             ]),
                         Tab::make(__('venditio-admin::translations.product.form.tabs.images'))
                             ->icon('heroicon-o-photo')
@@ -166,6 +186,7 @@ class ProductResource extends Resource
                                             ->directory(fn (Product $record) => "products/{$record->getKey()}"),
                                         TextInput::make('alt')
                                             ->label(__('venditio-admin::translations.product.form.images.alt.label'))
+                                            ->helperText(__('venditio-admin::translations.product.form.images.alt.helper_text'))
                                             ->required()
                                             ->maxLength(255),
                                     ]),
@@ -234,17 +255,28 @@ class ProductResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            ProductItemsRelationManager::class,
-        ];
+        return collect(config('venditio-admin.resources.product.relation_managers'))
+            ->filter(fn (array $manager) => $manager['enabled'])
+            ->map(fn (array $manager) => $manager['class'])
+            ->toArray();
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListProducts::route('/'),
-            'create' => CreateProduct::route('/create'),
+            'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                Active::class,
+                InDateRange::class,
+                // SoftDeletingScope::class,
+            ]);
     }
 }
