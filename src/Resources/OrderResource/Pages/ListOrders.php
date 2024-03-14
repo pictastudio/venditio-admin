@@ -4,7 +4,6 @@ namespace PictaStudio\VenditioAdmin\Resources\OrderResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Support\Enums\MaxWidth;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use PictaStudio\VenditioAdmin\Resources\Traits\ListWithTabs;
