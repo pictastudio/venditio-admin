@@ -26,7 +26,8 @@ class OrderItemsTable extends TableComponent
     {
         return $table
             ->query($this->record->lines()->getQuery())
-                // ->wherein('type', ['physical', 'digital']))
+            ->paginated(config('venditio-admin.resources.default.order.configuration.order_lines.paginated'))
+            // ->wherein('type', ['physical', 'digital']))
             ->columns([
                 Split::make([
                     ImageColumn::make('image')
@@ -91,7 +92,6 @@ class OrderItemsTable extends TableComponent
                     ->collapsed()
                     ->collapsible(),
             ])
-            ->paginated(config('venditio-admin.resources.default.order.configuration.order_lines.paginated'))
             ->bulkActions([
                 // $this->getBulkRefundAction(),
             ]);

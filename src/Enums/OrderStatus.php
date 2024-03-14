@@ -14,8 +14,11 @@ enum OrderStatus: string implements HasColor, HasIcon, HasLabel
     case CANCELLED = 'cancelled';
     case REFUNDED = 'refunded';
     case FAILED = 'failed';
-    case ON_HOLD = 'on-hold';
-    case AWAITING_PAYMENT = 'awaiting-payment';
+    case ON_HOLD = 'on_hold';
+    case PAYMENT_FAILED = 'payment_failed';
+    case PAYMENT_PENDING = 'payment_pending';
+    case SHIPPED = 'shipped';
+    case DELIVERED = 'delivered';
 
     public function getLabel(): ?string
     {
@@ -27,7 +30,10 @@ enum OrderStatus: string implements HasColor, HasIcon, HasLabel
             self::REFUNDED => 'Refunded',
             self::FAILED => 'Failed',
             self::ON_HOLD => 'On Hold',
-            self::AWAITING_PAYMENT => 'Awaiting Payment',
+            self::PAYMENT_FAILED => 'Payment Failed',
+            self::PAYMENT_PENDING => 'Payment Pending',
+            self::SHIPPED => 'Shipped',
+            self::DELIVERED => 'Delivered',
         };
     }
 
@@ -41,7 +47,10 @@ enum OrderStatus: string implements HasColor, HasIcon, HasLabel
             self::REFUNDED => 'sky',
             self::FAILED => 'danger',
             self::ON_HOLD => 'orange',
-            self::AWAITING_PAYMENT => 'orange',
+            self::PAYMENT_FAILED => 'danger',
+            self::PAYMENT_PENDING => 'orange',
+            self::SHIPPED => 'emerald',
+            self::DELIVERED => 'emerald',
         };
     }
 
@@ -55,7 +64,10 @@ enum OrderStatus: string implements HasColor, HasIcon, HasLabel
             self::REFUNDED => 'heroicon-o-receipt-refund',
             self::FAILED => 'heroicon-o-x-mark',
             self::ON_HOLD => 'heroicon-o-pause',
-            self::AWAITING_PAYMENT => 'heroicon-o-banknotes',
+            self::PAYMENT_FAILED => 'heroicon-o-x-mark',
+            self::PAYMENT_PENDING => 'heroicon-o-pause',
+            self::SHIPPED => 'heroicon-o-truck',
+            self::DELIVERED => 'heroicon-o-check',
         };
     }
 }

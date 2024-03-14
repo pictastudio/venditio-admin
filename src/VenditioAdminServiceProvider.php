@@ -175,7 +175,7 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
                         ->send();
                 });
 
-                $iconColumn->tooltip('Click to toggle');
+                $iconColumn->tooltip(__('venditio-admin::translations.global.columns.icon.toggle.tooltip'));
 
                 $iconColumn->alignCenter();
 

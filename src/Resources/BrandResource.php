@@ -17,6 +17,8 @@ class BrandResource extends Resource
 {
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
 
+    protected static ?int $navigationSort = 2;
+
     public static function getModel(): string
     {
         return config('venditio-core.models.brand');

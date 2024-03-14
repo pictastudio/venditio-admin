@@ -5,6 +5,7 @@ namespace PictaStudio\VenditioAdmin\Resources\OrderResource\Pages;
 use Awcodes\Shout\Components\ShoutEntry;
 use Filament\Actions\Action as ActionsAction;
 use Filament\Actions\DeleteAction;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Set;
 use Filament\Infolists\Components\Actions\Action;
@@ -66,7 +67,7 @@ class ManageOrder extends ViewRecord
                 ))
                 ->after(function () {
                     Notification::make()
-                        ->title(__('filament-panels::resources/pages/edit-record.notifications.saved.title'))
+                        ->label(__('venditio-admin::translations.order.infolist.approved_at.notification.title'))
                         ->success()
                         ->send();
                 }),
@@ -274,9 +275,13 @@ class ManageOrder extends ViewRecord
                                     ->button()
                                     ->size(ActionSize::ExtraSmall)
                                     ->openUrlInNewTab()
-                                    ->url(
-                                        UserResource::getUrl('edit', ['record' => $state->getKey()])
-                                    )
+                                    ->url(function () {
+                                        if (!collect(Filament::getResources())->contains(config('venditio-admin.resources.default.user.class'))) {
+                                            return;
+                                        }
+
+                                        return UserResource::getUrl('edit', ['record' => $this->getRecord()->user->getKey()]);
+                                    })
                             ),
                         Section::make()
                             ->compact()

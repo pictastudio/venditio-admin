@@ -33,6 +33,8 @@ class ProductResource extends Resource
 {
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
+    protected static ?int $navigationSort = -1;
+
     public static function getModel(): string
     {
         return config('venditio-core.models.product');
@@ -76,15 +78,18 @@ class ProductResource extends Resource
                                             ->label(__('venditio-admin::translations.product.form.brand.label'))
                                             ->required()
                                             ->relationship('brand', 'name')
-                                            ->searchable(),
+                                            ->searchable()
+                                            ->preload(),
                                         Select::make('product_type_id')
                                             ->label(__('venditio-admin::translations.product.form.product_type.label'))
                                             ->required()
-                                            ->relationship('productType', 'name'),
+                                            ->relationship('productType', 'name')
+                                            ->preload(),
                                         Select::make('tax_class_id')
                                             ->label(__('venditio-admin::translations.product.form.tax_class.label'))
                                             ->required()
-                                            ->relationship('taxClass', 'name'),
+                                            ->relationship('taxClass', 'name')
+                                            ->preload(),
                                         Select::make('categories')
                                             ->label(__('venditio-admin::translations.product.form.categories.label'))
                                             ->required()

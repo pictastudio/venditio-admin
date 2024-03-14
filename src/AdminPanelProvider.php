@@ -12,7 +12,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -65,6 +64,7 @@ class AdminPanelProvider extends PanelProvider
                 'purple' => Color::Purple,
                 'pink' => Color::Pink,
             ])
+            ->discoverClusters(config('venditio-admin.clusters.in'), config('venditio-admin.clusters.for'))
             // ->discoverResources(in: __DIR__ . '/Resources', for: 'PictaStudio\\VenditioAdmin\\Resources')
             ->resources(
                 $this->getResources('venditio-admin.resources.default')
@@ -79,9 +79,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: __DIR__ . '/Widgets', for: 'PictaStudio\\VenditioAdmin\\Widgets')
             ->widgets(
-                $this->getWidgets()
-                    ->merge(Widgets\AccountWidget::class)
-                    ->toArray()
+                $this->getWidgets()->toArray()
             )
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth(MaxWidth::Full)

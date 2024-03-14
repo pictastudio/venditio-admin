@@ -1,5 +1,6 @@
 <?php
 
+use Filament\Widgets;
 use PictaStudio\VenditioAdmin\Resources;
 use PictaStudio\VenditioAdmin\Resources\ProductResource\RelationManagers\ProductItemsRelationManager;
 
@@ -44,6 +45,19 @@ return [
         'variants' => [
             'enabled' => false,
         ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Clusters
+    |--------------------------------------------------------------------------
+    |
+    | Specify clusters
+    |
+    */
+    'clusters' => [
+        'in' => __DIR__ . '/Clusters',
+        'for' => 'PictaStudio\\VenditioAdmin\\Clusters',
     ],
 
     /*
@@ -100,7 +114,12 @@ return [
     |
     */
     'widgets' => [
-        'dashboard' => [],
+        'dashboard' => [
+            'account' => [
+                'enabled' => true,
+                'class' => Widgets\AccountWidget::class,
+            ],
+        ],
     ],
 
     /*

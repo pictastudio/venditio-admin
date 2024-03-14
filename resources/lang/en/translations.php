@@ -19,6 +19,13 @@ return [
                 'title' => 'Validation Error',
             ],
         ],
+        'columns' => [
+            'icon' => [
+                'toggle' => [
+                    'tooltip' => 'Click to toggle',
+                ],
+            ],
+        ],
     ],
 
     'order' => [
@@ -49,13 +56,16 @@ return [
                 'label' => 'Total',
             ],
             'approved_at' => [
-                'label' => 'Date',
+                'label' => 'Date Approved',
             ],
         ],
         'infolist' => [
             'approved_at' => [
                 'action' => [
                     'label' => 'Approve',
+                ],
+                'notification' => [
+                    'title' => 'Order approved',
                 ],
             ],
             'admin_notes' => [

@@ -19,6 +19,13 @@ return [
                 'title' => 'Errore di validazione',
             ],
         ],
+        'columns' => [
+            'icon' => [
+                'toggle' => [
+                    'tooltip' => 'Clicca per attivare/disattivare',
+                ],
+            ],
+        ],
     ],
 
     'order' => [
@@ -49,13 +56,16 @@ return [
                 'label' => 'Totale',
             ],
             'approved_at' => [
-                'label' => 'Data',
+                'label' => 'Data Approvazione',
             ],
         ],
         'infolist' => [
             'approved_at' => [
                 'action' => [
                     'label' => 'Approva',
+                ],
+                'notification' => [
+                    'title' => 'Ordine approvato',
                 ],
             ],
             'admin_notes' => [
@@ -312,8 +322,8 @@ return [
 
     'product_category' => [
         'label' => [
-            'singular' => 'Categoria Prodotto',
-            'plural' => 'Categorie Prodotti',
+            'singular' => 'Categoria',
+            'plural' => 'Categorie',
         ],
         'form' => [
             'details' => [
@@ -348,8 +358,8 @@ return [
 
     'brand' => [
         'label' => [
-            'singular' => 'Produttore',
-            'plural' => 'Produttori',
+            'singular' => 'Marchio',
+            'plural' => 'Marchi',
         ],
         'form' => [
             'details' => [

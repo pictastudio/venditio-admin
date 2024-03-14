@@ -19,6 +19,8 @@ class ProductCategoryResource extends Resource
 {
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 1;
+
     public static function getModel(): string
     {
         return config('venditio-core.models.product_category');
