@@ -12,6 +12,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use PictaStudio\VenditioAdmin\Resources\BrandResource\Pages;
+use PictaStudio\VenditioCore\Models\Contracts\Brand;
 
 class BrandResource extends Resource
 {
@@ -21,7 +22,7 @@ class BrandResource extends Resource
 
     public static function getModel(): string
     {
-        return config('venditio-core.models.brand');
+        return app(Brand::class)::class;
     }
 
     public static function getModelLabel(): string

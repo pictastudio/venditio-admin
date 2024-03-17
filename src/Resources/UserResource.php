@@ -18,7 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use PictaStudio\VenditioAdmin\Resources\UserResource\Pages;
-use PictaStudio\VenditioCore\Models\User;
+use PictaStudio\VenditioCore\Models\Contracts\User;
 
 class UserResource extends Resource
 {
@@ -26,7 +26,7 @@ class UserResource extends Resource
 
     public static function getModel(): string
     {
-        return config('venditio-core.models.user');
+        return app(User::class)::class;
     }
 
     public static function getModelLabel(): string

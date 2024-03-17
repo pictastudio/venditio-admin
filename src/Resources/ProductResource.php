@@ -25,6 +25,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use PictaStudio\VenditioAdmin\Resources\ProductResource\Pages;
+use PictaStudio\VenditioCore\Models\Contracts\Product as ContractsProduct;
 use PictaStudio\VenditioCore\Models\Product;
 use PictaStudio\VenditioCore\Models\Scopes\Active;
 use PictaStudio\VenditioCore\Models\Scopes\InDateRange;
@@ -37,7 +38,7 @@ class ProductResource extends Resource
 
     public static function getModel(): string
     {
-        return config('venditio-core.models.product');
+        return app(ContractsProduct::class)::class;
     }
 
     public static function getModelLabel(): string
@@ -105,10 +106,7 @@ class ProductResource extends Resource
                                 Select::make('status')
                                     ->label(__('venditio-admin::translations.product.form.status.label'))
                                     ->required()
-                                    ->options([
-                                        'draft' => 'Draft',
-                                        'published' => 'Published',
-                                    ]),
+                                    ->options(config('venditio-core.products.status_enum')),
                                 TextInput::make('description_short')
                                     ->label(__('venditio-admin::translations.product.form.description_short.label'))
                                     ->columnSpanFull()

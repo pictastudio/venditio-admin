@@ -18,6 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use PictaStudio\VenditioAdmin\Resources\OrderResource\Pages;
 use PictaStudio\VenditioAdmin\Resources\OrderResource\Pages\ManageOrder;
+use PictaStudio\VenditioCore\Models\Contracts\Order;
 
 class OrderResource extends Resource
 {
@@ -25,7 +26,7 @@ class OrderResource extends Resource
 
     public static function getModel(): string
     {
-        return config('venditio-core.models.order');
+        return app(Order::class)::class;
     }
 
     public static function getModelLabel(): string

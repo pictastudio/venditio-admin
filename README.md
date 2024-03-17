@@ -113,6 +113,10 @@ return [
 ];
 ```
 
+## Auth
+To manage auth and permissions this package uses `PictaStudio\VenditioCore\Managers\Contracts\AuthManager` from the [core](https://github.com/pictastudio/venditio-core) package.
+In order to authoriza access to the filament panel the instance of `PictaStudio\VenditioCore\Managers\Contracts\AuthManager` that is binded into the container must implement the `canAccessAdminPanel` method
+
 ## Testing
 
 ```bash
