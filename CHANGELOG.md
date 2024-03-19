@@ -2,6 +2,10 @@
 
 All notable changes to `venditio-admin` will be documented in this file.
 
+## v0.1.2 - 2024-03-19
+
+add navigation groups and items for filament panel
+
 ## v0.1.1 - 2024-03-14
 
 - wip + fix resources
