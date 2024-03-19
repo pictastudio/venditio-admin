@@ -81,6 +81,8 @@ class AdminPanelProvider extends PanelProvider
             ->widgets(
                 $this->getWidgets()->toArray()
             )
+            ->navigationGroups($this->getNavigationGroups())
+            ->navigationItems($this->getNavigationItems())
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth(MaxWidth::Full)
             // ->navigationGroups([
@@ -138,5 +140,15 @@ class AdminPanelProvider extends PanelProvider
             ->filter(fn (array $resource) => $resource['enabled'])
             ->map(fn (array $resource) => $resource['class'])
             ->values();
+    }
+
+    public function getNavigationGroups(): array
+    {
+        return config('venditio-admin.navigation.groups')();
+    }
+
+    public function getNavigationItems(): array
+    {
+        return config('venditio-admin.navigation.items')();
     }
 }

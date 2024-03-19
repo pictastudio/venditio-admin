@@ -124,6 +124,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Navigation Groups and Items
+    |--------------------------------------------------------------------------
+    |
+    | Specify the navigation groups and items
+    |
+    */
+    'navigation' => [
+        'groups' => function () { // closure returning an array of Filament\Navigation\NavigationGroup instances
+            return [
+                null, // Filament\Navigation\NavigationGroup instance
+                null, // Filament\Navigation\NavigationGroup instance
+            ];
+        },
+        'items' => function () { // closure returning an array of Filament\Navigation\NavigationItem instances
+            return [
+                null, // Filament\Navigation\NavigationItem instance
+                null, // Filament\Navigation\NavigationItem instance
+            ];
+        },
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Filament Configuration
     |--------------------------------------------------------------------------
     |
