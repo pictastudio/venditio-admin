@@ -22,7 +22,8 @@ trait ListWithTabs
         );
 
         return [
-            'all' => Tab::make('All'),
+            'all' => Tab::make('All')
+                ->badge(fn () => $this->getTableQuery()->count()),
             ...$cases->mapWithKeys(
                 fn (BackedEnum&HasLabel&HasColor $case) => [
                     $case->value => Tab::make($case->getLabel())

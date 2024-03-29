@@ -38,7 +38,7 @@ return [
         ],
         'table' => [
             'identifier' => [
-                'label' => 'Identificatore',
+                'label' => 'Identificativo',
             ],
             'status' => [
                 'label' => 'Stato',
@@ -120,7 +120,7 @@ return [
                 'label' => 'Stato',
             ],
             'identifier' => [
-                'label' => 'Identificatore',
+                'label' => 'Identificativo',
             ],
             'date_created' => [
                 'label' => 'Data di Creazione',
