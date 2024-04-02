@@ -23,6 +23,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 use Livewire\Features\SupportTesting\Testable;
 use PictaStudio\VenditioAdmin\Testing\TestsVenditioAdmin;
@@ -107,6 +108,11 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
             $fileUpload
                 ->columnSpanFull()
                 ->downloadable()
+                ->hintAction(
+                    Action::make('view')
+                        ->label(__('venditio-admin::translations.global.forms.file_upload.hint_action.label'))
+                        ->url(fn (array $state) => asset('storage/' . Arr::first($state)), shouldOpenInNewTab: true)
+                )
         ));
 
         Repeater::configureUsing(fn (Repeater $repeater) => (

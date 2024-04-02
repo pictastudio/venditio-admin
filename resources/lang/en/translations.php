@@ -26,6 +26,13 @@ return [
                 ],
             ],
         ],
+        'forms' => [
+            'file_upload' => [
+                'hint_action' => [
+                    'label' => 'View',
+                ],
+            ],
+        ],
     ],
 
     'order' => [
