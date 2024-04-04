@@ -1,5 +1,11 @@
 <?php
 
+use Filament\Pages\Auth\EditProfile;
+use Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
+use Filament\Pages\Auth\Login;
+use Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
+use Filament\Pages\Auth\PasswordReset\ResetPassword;
+use Filament\Pages\Auth\Register;
 use Filament\Widgets;
 use PictaStudio\VenditioAdmin\Resources;
 use PictaStudio\VenditioAdmin\Resources\ProductResource\RelationManagers\ProductItemsRelationManager;
@@ -17,6 +23,26 @@ return [
     'panel' => [
         'path' => 'venditio-admin',
         'default' => true, // set the panel from this package as the default panel
+        'spa' => true, // enable the single page application navigation mode
+        'login' => Login::class,
+        'profile' => [
+            'enabled' => true,
+            'class' => EditProfile::class,
+            'simple' => true,
+        ],
+        'registration' => [
+            'enabled' => true,
+            'action' => Register::class,
+        ],
+        'email_verification' => [
+            'enabled' => true,
+            'prompt_action' => EmailVerificationPrompt::class,
+        ],
+        'password_reset' => [
+            'enabled' => true,
+            'request_action' => RequestPasswordReset::class,
+            'reset_action' => ResetPassword::class,
+        ],
     ],
 
     /*

@@ -8,6 +8,12 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
+use Filament\Pages\Auth\EditProfile;
+use Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
+use Filament\Pages\Auth\Login;
+use Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
+use Filament\Pages\Auth\PasswordReset\ResetPassword;
+use Filament\Pages\Auth\Register;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -20,41 +26,64 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Collection;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use PictaStudio\VenditioAdmin\Pages\Auth\Login;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // $brandAsset = function ($asset) {
-        //     $vendorPath = 'vendor/lunarpanel/';
+        $brandLogo = function (?string $path = null) {
+            if ($path && file_exists(public_path($path))) {
+                return asset($path);
+            }
 
-        //     if (file_exists(public_path($vendorPath.$asset))) {
-        //         return asset($vendorPath.$asset);
-        //     } else {
-        //         $type = str($asset)
-        //             ->endsWith('.png') ? 'image/png' : 'image/svg+xml';
-
-        //         return "data:{$type};base64,".base64_encode(file_get_contents(__DIR__.'/../public/'.$asset));
-        //     }
-        // };
-
-        // return $panel;
+            return null;
+        };
 
         return $panel
             ->spa(config('venditio-admin.panel.spa', false))
             ->default(config('venditio-admin.panel.default'))
             ->id('venditio-admin')
-            ->login()
-            // ->passwordReset()
-            // ->path('admin')
+            ->login(config('venditio-admin.panel.login', Login::class))
+            ->when(
+                config('venditio-admin.panel.email_verification.enabled', false),
+                fn (Panel $panel) => $panel->emailVerification(
+                    config('venditio-admin.panel.email_verification.prompt_action', EmailVerificationPrompt::class)
+                )
+            )
+            ->when(
+                config('venditio-admin.panel.registration.enabled', false),
+                fn (Panel $panel) => $panel->registration(
+                    config('venditio-admin.panel.registration.action', Register::class)
+                )
+            )
+            ->when(
+                config('venditio-admin.panel.profile.enabled', false),
+                fn (Panel $panel) => $panel->profile(
+                    config('venditio-admin.panel.profile.class', EditProfile::class),
+                    config('venditio-admin.panel.profile.simple', true)
+                )
+            )
+            ->when(
+                config('venditio-admin.panel.password_reset.enabled', false),
+                fn (Panel $panel) => $panel->passwordReset(
+                    config('venditio-admin.panel.password_reset.request_action', RequestPasswordReset::class),
+                    config('venditio-admin.panel.password_reset.reset_action', ResetPassword::class)
+                )
+            )
+            // ->loginRouteSlug('/filament/login')
+            // ->registrationRouteSlug('/filament/register')
+            // ->passwordResetRoutePrefix('/filament/password-reset')
+            // ->passwordResetRequestRouteSlug('/filament/request')
+            // ->passwordResetRouteSlug('/filament/reset')
+            // ->emailVerificationRoutePrefix('/filament/email-verification')
+            // ->emailVerificationPromptRouteSlug('/filament/prompt')
+            // ->emailVerificationRouteSlug('/filament/verify')
             ->path(config('venditio-admin.panel.path'))
-            // ->login(Login::class)
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
             ->brandName(config('venditio-admin.brand.name'))
-            ->brandLogo(config('venditio-admin.brand.logo.light'))
-            ->darkModeBrandLogo(config('venditio-admin.brand.logo.dark'))
+            ->brandLogo($brandLogo(config('venditio-admin.brand.logo.light')))
+            ->darkModeBrandLogo($brandLogo(config('venditio-admin.brand.logo.dark')))
             ->colors([
                 'primary' => Color::Amber,
                 'gray' => Color::Gray,
@@ -98,9 +127,6 @@ class AdminPanelProvider extends PanelProvider
                     ->url('/', true)
                     ->icon('heroicon-m-globe-alt'),
             ])
-            // ->registration()
-            // ->passwordReset()
-            // ->emailVerification()
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->middleware([
                 EncryptCookies::class,
@@ -116,14 +142,6 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
-        // ->loginRouteSlug('/filament/login')
-        // ->registrationRouteSlug('/filament/register')
-        // ->passwordResetRoutePrefix('/filament/password-reset')
-        // ->passwordResetRequestRouteSlug('/filament/request')
-        // ->passwordResetRouteSlug('/filament/reset')
-        // ->emailVerificationRoutePrefix('/filament/email-verification')
-        // ->emailVerificationPromptRouteSlug('/filament/prompt')
-        // ->emailVerificationRouteSlug('/filament/verify');
     }
 
     public function getResources(string $key): Collection
