@@ -2,6 +2,10 @@
 
 All notable changes to `venditio-admin` will be documented in this file.
 
+## v0.1.6 - 2024-04-04
+
+added configurations for panel auth actions
+
 ## v0.1.5 - 2024-04-04
 
 added configurations for panel auth actions
