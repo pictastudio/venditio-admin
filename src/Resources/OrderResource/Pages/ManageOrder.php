@@ -78,7 +78,7 @@ class ManageOrder extends ViewRecord
                 ->modalSubmitActionLabel(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
                 ->form([
                     Textarea::make('admin_notes')
-                        ->label(__('venditio-admin::translations.order.infolist.admin_notes.field_label'))
+                        ->label(false)
                         ->placeholder(__('venditio-admin::translations.order.infolist.admin_notes.placeholder'))
                         ->afterStateHydrated(function (Set $set) {
                             $set('admin_notes', $this->record->admin_notes);

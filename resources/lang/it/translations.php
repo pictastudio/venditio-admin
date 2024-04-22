@@ -168,7 +168,7 @@ return [
                 'address_line_1' => 'Indirizzo Linea 1',
                 'address_line_2' => 'Indirizzo Linea 2',
                 'city' => 'Città',
-                'state' => 'Stato',
+                'state' => 'Provincia',
                 'zip' => 'CAP',
             ],
         ],

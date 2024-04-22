@@ -39,6 +39,21 @@ class AdminPanelProvider extends PanelProvider
             return null;
         };
 
+        $colors = [
+            'primary' => Color::Amber,
+            'gray' => Color::Gray,
+            'orange' => Color::Orange,
+            'emerald' => Color::Emerald,
+            'sky' => Color::Sky,
+            'purple' => Color::Purple,
+            'pink' => Color::Pink,
+        ];
+
+        $configColors = config('venditio-admin.panel.colors');
+        foreach ($configColors as $key => $value) {
+            $colors[$key] = $value;
+        }
+
         return $panel
             ->spa(config('venditio-admin.panel.spa', false))
             ->default(config('venditio-admin.panel.default'))
@@ -84,15 +99,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName(config('venditio-admin.brand.name'))
             ->brandLogo($brandLogo(config('venditio-admin.brand.logo.light')))
             ->darkModeBrandLogo($brandLogo(config('venditio-admin.brand.logo.dark')))
-            ->colors([
-                'primary' => Color::Amber,
-                'gray' => Color::Gray,
-                'orange' => Color::Orange,
-                'emerald' => Color::Emerald,
-                'sky' => Color::Sky,
-                'purple' => Color::Purple,
-                'pink' => Color::Pink,
-            ])
+            ->colors($colors)
             ->discoverClusters(config('venditio-admin.clusters.in'), config('venditio-admin.clusters.for'))
             // ->discoverResources(in: __DIR__ . '/Resources', for: 'PictaStudio\\VenditioAdmin\\Resources')
             ->resources(

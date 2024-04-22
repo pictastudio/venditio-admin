@@ -6,6 +6,7 @@ use Filament\Pages\Auth\Login;
 use Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
 use Filament\Pages\Auth\PasswordReset\ResetPassword;
 use Filament\Pages\Auth\Register;
+use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use PictaStudio\VenditioAdmin\Resources;
 use PictaStudio\VenditioAdmin\Resources\ProductResource\RelationManagers\ProductItemsRelationManager;
@@ -42,6 +43,15 @@ return [
             'enabled' => true,
             'request_action' => RequestPasswordReset::class,
             'reset_action' => ResetPassword::class,
+        ],
+        'colors' => [
+            'primary' => Color::Amber,
+            'gray' => Color::Gray,
+            'orange' => Color::Orange,
+            'emerald' => Color::Emerald,
+            'sky' => Color::Sky,
+            'purple' => Color::Purple,
+            'pink' => Color::Pink,
         ],
     ],
 
