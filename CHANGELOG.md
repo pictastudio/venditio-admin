@@ -2,6 +2,10 @@
 
 All notable changes to `venditio-admin` will be documented in this file.
 
+## v0.1.9 - 2024-05-21
+
+fix middleware
+
 ## v0.1.8 - 2024-05-21
 
 add middleware to config
