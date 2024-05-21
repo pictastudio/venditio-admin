@@ -135,17 +135,9 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-m-globe-alt'),
             ])
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
-            ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-            ])
+            ->middleware(
+                $this->getMiddlewares()->toArray()
+            )
             ->authMiddleware([
                 Authenticate::class,
             ]);
@@ -164,6 +156,26 @@ class AdminPanelProvider extends PanelProvider
         return collect(config('venditio-admin.widgets.dashboard'))
             ->filter(fn (array $resource) => $resource['enabled'])
             ->map(fn (array $resource) => $resource['class'])
+            ->values();
+    }
+
+    public function getMiddlewares(): Collection
+    {
+        $default = [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            AuthenticateSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            DisableBladeIconComponents::class,
+            DispatchServingFilamentEvent::class,
+        ];
+
+        return collect($default)
+            ->prepend(...config('venditio-admin.panel.middleware.prepend'))
+            ->push(...config('venditio-admin.panel.middleware.append'))
             ->values();
     }
 

@@ -53,6 +53,10 @@ return [
             'purple' => Color::Purple,
             'pink' => Color::Pink,
         ],
+        'middleware' => [
+            'prepend' => [],
+            'append' => [],
+        ],
     ],
 
     /*
