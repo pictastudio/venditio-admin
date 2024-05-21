@@ -174,8 +174,9 @@ class AdminPanelProvider extends PanelProvider
         ];
 
         return collect($default)
-            ->prepend(...config('venditio-admin.panel.middleware.prepend'))
-            ->push(...config('venditio-admin.panel.middleware.append'))
+            ->prepend(config('venditio-admin.panel.middleware.prepend', []))
+            ->push(config('venditio-admin.panel.middleware.append', []))
+            ->flatten()
             ->values();
     }
 
