@@ -2,6 +2,7 @@
 
 namespace PictaStudio\VenditioAdmin;
 
+use Closure;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -146,7 +147,7 @@ class AdminPanelProvider extends PanelProvider
     public function getResources(string $key): Collection
     {
         return collect(config($key))
-            ->filter(fn (array $resource) => $resource['enabled'])
+            ->filter(fn (array $resource) => $resource['enabled'] instanceof Closure ? $resource['enabled']() : $resource['enabled'])
             ->map(fn (array $resource) => $resource['class'])
             ->values();
     }
@@ -154,7 +155,7 @@ class AdminPanelProvider extends PanelProvider
     public function getWidgets(): Collection
     {
         return collect(config('venditio-admin.widgets.dashboard'))
-            ->filter(fn (array $resource) => $resource['enabled'])
+            ->filter(fn (array $resource) => $resource['enabled'] instanceof Closure ? $resource['enabled']() : $resource['enabled'])
             ->map(fn (array $resource) => $resource['class'])
             ->values();
     }
