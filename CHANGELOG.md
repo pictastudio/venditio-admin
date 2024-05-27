@@ -2,6 +2,10 @@
 
 All notable changes to `venditio-admin` will be documented in this file.
 
+## v0.1.10 - 2024-05-27
+
+allow closure into config enabled key
+
 ## v0.1.9 - 2024-05-21
 
 fix middleware
