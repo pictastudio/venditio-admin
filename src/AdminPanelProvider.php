@@ -27,6 +27,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Collection;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Support\Arr;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -138,7 +139,7 @@ class AdminPanelProvider extends PanelProvider
             ->when(
                 config('venditio-admin.user_menu_items'),
                 fn (Panel $panel) => $panel->userMenuItems(
-                    array_values(config('venditio-admin.user_menu_items'))
+                    Arr::wrap(config('venditio-admin.user_menu_items'))
                 )
             )
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
