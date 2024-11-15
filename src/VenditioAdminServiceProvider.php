@@ -71,9 +71,7 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageRegistered(): void
-    {
-    }
+    public function packageRegistered(): void {}
 
     public function packageBooted(): void
     {
@@ -101,7 +99,7 @@ class VenditioAdminServiceProvider extends PackageServiceProvider
         }
 
         // Testing
-        Testable::mixin(new TestsVenditioAdmin());
+        Testable::mixin(new TestsVenditioAdmin);
 
         // Configurations
         FileUpload::configureUsing(fn (FileUpload $fileUpload) => (

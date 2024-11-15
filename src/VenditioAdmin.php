@@ -2,6 +2,4 @@
 
 namespace PictaStudio\VenditioAdmin;
 
-class VenditioAdmin
-{
-}
+class VenditioAdmin {}

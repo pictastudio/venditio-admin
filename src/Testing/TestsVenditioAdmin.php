@@ -7,6 +7,4 @@ use Livewire\Features\SupportTesting\Testable;
 /**
  * @mixin Testable
  */
-class TestsVenditioAdmin
-{
-}
+class TestsVenditioAdmin {}
