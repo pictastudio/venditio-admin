@@ -136,9 +136,9 @@ class AdminPanelProvider extends PanelProvider
             //         ->icon('heroicon-m-globe-alt'),
             // ])
             ->when(
-                config('venditio-admin.user_menu_items.visit_site'),
+                config('venditio-admin.user_menu_items'),
                 fn (Panel $panel) => $panel->userMenuItems(
-                    array_values(config('venditio-admin.user_menu_items.visit_site'))
+                    array_values(config('venditio-admin.user_menu_items'))
                 )
             )
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
