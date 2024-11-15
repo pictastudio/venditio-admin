@@ -2,6 +2,19 @@
 
 All notable changes to `venditio-admin` will be documented in this file.
 
+## v0.1.11 - 2024-11-15
+
+### What's Changed
+
+* Add user menu items in config
+* Bump aglipanci/laravel-pint-action from 2.3.1 to 2.4 by @dependabot in https://github.com/pictastudio/venditio-admin/pull/2
+
+### New Contributors
+
+* @dependabot made their first contribution in https://github.com/pictastudio/venditio-admin/pull/2
+
+**Full Changelog**: https://github.com/pictastudio/venditio-admin/compare/v0.1.5...v0.1.11
+
 ## v0.1.10 - 2024-05-27
 
 allow closure into config enabled key
