@@ -2,6 +2,10 @@
 
 All notable changes to `venditio-admin` will be documented in this file.
 
+## v0.1.12 - 2024-11-15
+
+- fix config menu items
+
 ## v0.1.11 - 2024-11-15
 
 ### What's Changed
