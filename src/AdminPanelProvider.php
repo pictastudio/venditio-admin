@@ -128,13 +128,19 @@ class AdminPanelProvider extends PanelProvider
             //         // ->icon('heroicon-m-cog-6-tooth')
             //         ->collapsed(),
             // ])
-            ->userMenuItems([
-                MenuItem::make()
-                    ->label(fn () => __('venditio-admin::translations.global.widgets.dashboard.brand.visit_site'))
-                    // ->url(route('filament.admin.resources.users.index'))
-                    ->url('/', true)
-                    ->icon('heroicon-m-globe-alt'),
-            ])
+            // ->userMenuItems([
+            //     MenuItem::make()
+            //         ->label(fn () => __('venditio-admin::translations.global.widgets.dashboard.brand.visit_site'))
+            //         // ->url(route('filament.admin.resources.users.index'))
+            //         ->url('/', true)
+            //         ->icon('heroicon-m-globe-alt'),
+            // ])
+            ->when(
+                config('venditio-admin.user_menu_items.visit_site'),
+                fn (Panel $panel) => $panel->userMenuItems(
+                    array_values(config('venditio-admin.user_menu_items.visit_site'))
+                )
+            )
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->middleware(
                 $this->getMiddlewares()->toArray()
